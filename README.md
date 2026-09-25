@@ -5,7 +5,7 @@ A [Claude Code skill](https://code.claude.com/docs/en/skills) that turns a paste
 It won't invent experience. Every claim comes from your own profile files, and job keywords you can't back up are listed as gaps instead of being slipped into your resume.
 
 > [!NOTE]
-> This skill grew out of the author's own job search and is shared as-is. It expects a specific workspace layout, calls three helper scripts that aren't in this repo, and has the author's file paths written into `SKILL.md`. The [install steps](#install) cover all three.
+> This skill grew out of the author's own job search and is shared as-is. It expects a specific workspace layout and has the author's file paths written into `SKILL.md`. The [`job-hunting/`](job-hunting) folder is a copy of the author's workspace for you to start from, and the [install steps](#install) cover the rest.
 
 ## What it does
 
@@ -65,7 +65,21 @@ To confirm it loaded, run `/skills` in Claude Code and look for `applying-to-job
 
 ### 2. Create your workspace
 
-The skill runs inside a git repo that holds your master profile and Word templates. The author's is called `job-hunting`; yours can live anywhere:
+The skill runs inside a git repo that holds your master profile, Word templates, and helper scripts. The [`job-hunting/`](job-hunting) folder in this repo is a copy of the author's setup. Copy it to wherever you want your workspace:
+
+macOS / Linux:
+
+```bash
+cp -R ~/.claude/skills/applying-to-job/job-hunting ~/job-hunting
+```
+
+Windows (PowerShell):
+
+```powershell
+Copy-Item -Recurse "$env:USERPROFILE\.claude\skills\applying-to-job\job-hunting" "$env:USERPROFILE\job-hunting"
+```
+
+Once it's in use, your workspace looks like this:
 
 ```text
 job-hunting/
@@ -75,19 +89,21 @@ job-hunting/
 │   ├── master-project.md            every project, with its stack, dates, and results
 │   └── master-education.md          degrees, plus an "## Awards & Honors" section
 ├── resume-template/
-│   └── resume-template.docx         your one-page Word resume template
+│   └── resume-template.docx         one-page Word resume template
 ├── cover-letter-template/
-│   └── cover-letter-template.docx   your Word cover-letter template
-├── scripts/                         helper scripts (not included, see below)
+│   └── cover-letter-template.docx   Word cover-letter template
+├── scripts/                         helper scripts (see below)
 │   ├── verify-resume-pattern.py
 │   ├── verify-resume-fit.ps1
-│   └── update-application-tracker.py
+│   ├── update-application-tracker.py
+│   └── test-*.ps1                   the author's tests for the scripts
+├── docs/                            the author's design notes for the skill
 ├── tracker.md                       created by the skill
 └── application-tracker.xlsx         created by the tracker script
 ```
 
-1. **Write the four `database/*.md` files.** They're the only thing the skill draws from, so include everything true you might want on a resume. It won't add anything that isn't there.
-2. **Add your two Word templates.**
+1. **Replace the author's profile with yours.** The four `database/*.md` files hold the author's own history as an example of the format. Rewrite them with yours. They're the only thing the skill draws from, so include everything true you might want on a resume. It won't add anything that isn't there.
+2. **Put your details in both Word templates.** Open them in Word and swap the author's name, contact line, and links for yours.
 3. **Commit it all to `main`.** Every application branch is cut from `main`:
 
    ```bash
@@ -99,9 +115,9 @@ job-hunting/
 
 Each application then gets its own worktree in a sibling folder named after your workspace, for example `job-hunting-worktrees/2026-07-06-stripe-full-stack-engineer/`.
 
-#### Helper scripts (not included)
+#### Helper scripts
 
-Step 10 and the tracker updates call three scripts in your workspace's `scripts/` folder. They aren't published in this repo:
+Step 10 and the tracker updates call three scripts in your workspace's `scripts/` folder:
 
 | Script | What it does |
 |---|---|
@@ -109,11 +125,11 @@ Step 10 and the tracker updates call three scripts in your workspace's `scripts/
 | `verify-resume-fit.ps1` | Opens the resume in Word and passes only if it's exactly one page with at least 92% of the usable height filled |
 | `update-application-tracker.py` | Adds or updates rows in `application-tracker.xlsx`: one sheet per month, with a Status dropdown. Subcommands: `add` and `set-status` |
 
-Without them, either write your own (Step 10 and "After the Workflow" in `SKILL.md` describe what each one checks and how it's called), or ask Claude to skip those checks and keep only `tracker.md`.
+`verify-resume-fit.ps1` drives Microsoft Word through PowerShell, so it only runs on Windows. On a Mac, ask Claude to skip that check, then open the resume in Word and confirm it fills exactly one page.
 
 #### Your resume template
 
-Step 10's formatting rules describe the author's resume template: the section order (Experience, Projects, Technical Skills, Education, Awards), two-line headings with the company first, and exact font sizes and tab stops. If your template is different, update Step 4's rules and Step 10's heading table in `SKILL.md` to match it.
+Step 10's formatting rules match the included `resume-template.docx`: the section order (Experience, Projects, Technical Skills, Education, Awards), two-line headings with the company first, and exact font sizes and tab stops. Keep its layout when you add your details. If you switch to a different template, update Step 4's rules and Step 10's heading table in `SKILL.md` to match it.
 
 ### 3. Point the skill at your paths
 
@@ -174,4 +190,5 @@ guidelines/
 references/
   llm-tells.md            AI-sounding words and punctuation to scrub
 templates/                skeletons for the Markdown files the skill writes
+job-hunting/              a copy of the author's workspace to start yours from
 ```
