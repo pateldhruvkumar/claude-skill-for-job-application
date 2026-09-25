@@ -79,6 +79,20 @@ Windows (PowerShell):
 Copy-Item -Recurse "$env:USERPROFILE\.claude\skills\applying-to-job\job-hunting" "$env:USERPROFILE\job-hunting"
 ```
 
+The copy also includes the author's own `tracker.md`. Delete it from your copy so your tracker starts empty:
+
+macOS / Linux:
+
+```bash
+rm ~/job-hunting/tracker.md
+```
+
+Windows (PowerShell):
+
+```powershell
+Remove-Item "$env:USERPROFILE\job-hunting\tracker.md"
+```
+
 Once it's in use, your workspace looks like this:
 
 ```text
@@ -98,6 +112,7 @@ job-hunting/
 │   ├── update-application-tracker.py
 │   └── test-*.ps1                   the author's tests for the scripts
 ├── docs/                            the author's design notes for the skill
+├── applications/                    finished applications, archived here as you go
 ├── tracker.md                       created by the skill
 └── application-tracker.xlsx         created by the tracker script
 ```
