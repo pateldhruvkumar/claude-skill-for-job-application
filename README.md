@@ -111,7 +111,7 @@ job-hunting/
 │   ├── verify-resume-fit.ps1
 │   ├── update-application-tracker.py
 │   └── test-*.ps1                   the author's tests for the scripts
-├── docs/                            the author's design notes for the skill
+├── docs/                            the author's design notes and plans
 ├── applications/                    finished applications, archived here as you go
 ├── tracker.md                       created by the skill
 └── application-tracker.xlsx         created by the tracker script
@@ -141,6 +141,8 @@ Step 10 and the tracker updates call three scripts in your workspace's `scripts/
 | `update-application-tracker.py` | Adds or updates rows in `application-tracker.xlsx`: one sheet per month, with a Status dropdown. Subcommands: `add` and `set-status` |
 
 `verify-resume-fit.ps1` drives Microsoft Word through PowerShell, so it only runs on Windows. On a Mac, ask Claude to skip that check, then open the resume in Word and confirm it fills exactly one page.
+
+The two `test-*.ps1` files are the author's own tests for these scripts. `test-verify-resume-fit.ps1` uses two of the author's past resumes, which aren't included, so it won't fully run in your copy.
 
 #### Your resume template
 
@@ -206,4 +208,10 @@ references/
   llm-tells.md            AI-sounding words and punctuation to scrub
 templates/                skeletons for the Markdown files the skill writes
 job-hunting/              a copy of the author's workspace to start yours from
+  database/               the author's profile files, as a format example
+  resume-template/        Word resume template
+  cover-letter-template/  Word cover-letter template
+  scripts/                helper scripts the skill runs
+  docs/                   the author's design notes and plans
+  tracker.md              the author's tracker (delete it in your copy)
 ```
